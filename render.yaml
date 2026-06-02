@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: viddrop-manager
+    env: docker
+    region: oregon
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production

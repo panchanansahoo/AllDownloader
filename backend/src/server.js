@@ -1,9 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const youtubedl = require('yt-dlp-exec');
+const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 4001; // Changed to 4001 to avoid EADDRINUSE
+const PORT = process.env.PORT || 4001;
+const isProduction = process.env.NODE_ENV === 'production';
 
 app.use(cors());
 app.use(express.json());
@@ -38,13 +40,18 @@ app.post('/api/analyze', async (req, res) => {
 
     try {
         console.log(`Analyzing: ${url}`);
-        const metadata = await youtubedl(url, {
+        const options = {
             dumpSingleJson: true,
             noCheckCertificates: true,
             noWarnings: true,
             preferFreeFormats: true,
-            cookiesFromBrowser: "chrome", // Peeks at local Chrome cookies to bypass login walls
-        });
+        };
+        
+        if (!isProduction) {
+            options.cookiesFromBrowser = "chrome";
+        }
+
+        const metadata = await youtubedl(url, options);
 
         // Try to estimate filesize (filesize_approx or filesize from best format)
         let estimatedSize = 0;
@@ -89,8 +96,11 @@ app.get('/api/download/stream', (req, res) => {
     const options = {
         o: '-', // stdout
         q: true,
-        cookiesFromBrowser: "chrome",
     };
+
+    if (!isProduction) {
+        options.cookiesFromBrowser = "chrome";
+    }
 
     const isAudio = ['mp3', 'm4a', 'wav', 'flac'].includes(format);
 
@@ -123,6 +133,15 @@ app.get('/api/download/stream', (req, res) => {
         console.log(`Stream finished with code ${code}`);
     });
 });
+
+// Serve frontend static files in production
+if (isProduction) {
+    app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+    
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
+    });
+}
 
 app.listen(PORT, () => {
     console.log(`VidDrop Backend running on port ${PORT}`);
