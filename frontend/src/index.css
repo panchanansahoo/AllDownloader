@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased font-sans selection:bg-indigo-500/30;
+}
+.dark body {
+  @apply bg-[#0B0F19] text-slate-100;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Premium Glassmorphism */
+.glass {
+  @apply bg-white/70 backdrop-blur-2xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.04)];
+}
+.dark .glass {
+  @apply bg-slate-900/50 border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.2)];
+}
+
+.glass-panel {
+  @apply bg-white/80 backdrop-blur-xl border border-slate-200/50 shadow-xl shadow-slate-200/20;
+}
+.dark .glass-panel {
+  @apply bg-slate-900/80 border-slate-800/50 shadow-2xl shadow-black/40;
+}
+
+/* Gradient Borders */
+.gradient-border {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.6), rgba(236, 72, 153, 0.55));
+  padding: 1px;
+}
+
+.gradient-border > div {
+  @apply bg-white dark:bg-[#0B0F19];
+}
+
+/* Custom scrollbar for webkit */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full;
+}
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-slate-700;
+}
+
+@layer utilities {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+  .shimmer-bg {
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite linear;
+  }
+  .dark .shimmer-bg {
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 100%;
+  }
+}
