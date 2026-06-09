@@ -1,10 +1,14 @@
 services:
   - type: web
-    name: viddrop-manager
-    env: docker
+    name: viddrop-backend
+    env: node
     region: oregon
     plan: free
-    healthCheckPath: /
+    buildCommand: npm run build --workspace backend
+    startCommand: npm run start --workspace backend
+    healthCheckPath: /health
     envVars:
       - key: NODE_ENV
         value: production
+      - key: CORS_ORIGIN
+        sync: false

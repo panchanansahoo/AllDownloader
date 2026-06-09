@@ -10,7 +10,10 @@ function createApp() {
   app.use(helmet());
   app.use(
     cors({
-      origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+      origin: process.env.CORS_ORIGIN?.split(',').map(o => o.trim()) || [
+        'http://localhost:5173',
+        'http://localhost:3000'
+      ],
     })
   );
   app.use(express.json({ limit: "10kb" }));

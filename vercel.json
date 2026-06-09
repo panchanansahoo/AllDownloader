@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build --workspace frontend",
+  "outputDirectory": "frontend/dist",
+  "env": {
+    "VITE_API_BASE_URL": "@vite_api_base_url"
+  }
+}
