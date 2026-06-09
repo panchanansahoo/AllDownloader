@@ -15,7 +15,9 @@ export function DownloadProvider({ children }) {
   };
 
   const runActualDownload = async (dl) => {
-    const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:4001";
+    const API_BASE =
+      import.meta.env.VITE_API_BASE_URL?.trim() ||
+      (import.meta.env.DEV ? "http://localhost:4001" : "");
     let targetUrl = `${API_BASE}/api/download/stream?url=${encodeURIComponent(dl.url)}&format=${dl.format}`;
     
     if (dl.startTime) targetUrl += `&startTime=${encodeURIComponent(dl.startTime)}`;
